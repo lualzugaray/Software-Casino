@@ -1,2 +1,3 @@
 # Software-Casino
-Parcial Programación Avanzada
+Trabajo integrador de la materia Programación Avanzada 2023
+
