@@ -5,6 +5,9 @@ import Logica.Validacion;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.Connection;
@@ -40,21 +43,20 @@ public class Tecnico extends Empleado implements Menu {
 	//metodos
 	
 	public boolean repararMaquina(int id) {
-		Conexion con = new Conexion();
-		try {
-			Connection conexion = con.conectar();
+	    Conexion con = new Conexion();
+	    try {
+	        Connection conexion = con.conectar();
 
-			String sql = "UPDATE maquina SET daniada = false WHERE id_maquina = ?;";
-			PreparedStatement stmt = conexion.prepareStatement(sql);
-			stmt.setInt(1, id);
+	        String sql = "UPDATE maquina SET daniada = false WHERE id_maquina = ?;";
+	        PreparedStatement stmt = conexion.prepareStatement(sql);
+	        stmt.setInt(1, id);
+	        stmt.executeUpdate();  // Ejecuta la actualización en la base de datos
 
-
-
-		} catch (Exception e) {
-			mostrarError("Hubo un error: " + e.getMessage());
-			return false;
-		}
-		return true;
+	    } catch (Exception e) {
+	        mostrarError("Hubo un error al reparar la máquina: " + e.getMessage());
+	        return false;
+	    }
+	    return true;
 	}
 
 
@@ -66,7 +68,7 @@ public class Tecnico extends Empleado implements Menu {
 			String sql = "UPDATE maquina SET habilitada = true WHERE id_maquina = ?;";
 			PreparedStatement stmt = conexion.prepareStatement(sql);
 			stmt.setInt(1, id);
-
+			stmt.executeUpdate();
 
 
 		} catch (Exception e) {
@@ -85,6 +87,7 @@ public class Tecnico extends Empleado implements Menu {
 			String sql = "UPDATE maquina SET habilitada = false WHERE id_maquina = ?;";
 			PreparedStatement stmt = conexion.prepareStatement(sql);
 			stmt.setInt(1, id);
+			stmt.executeUpdate();
 
 
 
@@ -135,6 +138,7 @@ public class Tecnico extends Empleado implements Menu {
 	    frame.setSize(400, 200);
 	    frame.setLayout(null);
 	    frame.setLocationRelativeTo(null);
+	    frame.getContentPane().setBackground(new Color(201, 183, 109));
 
 	    JLabel lblIdMaquina = new JLabel("ID de la Máquina:");
 	    lblIdMaquina.setBounds(20, 20, 120, 30);
@@ -146,34 +150,49 @@ public class Tecnico extends Empleado implements Menu {
 
 	    JButton btnReparar = new JButton("Reparar Máquina");
 	    btnReparar.setBounds(20, 60, 150, 30);
+	    btnReparar.setPreferredSize(new Dimension(150, 30));
+	    btnReparar.setBackground(new Color(0, 0, 0));
+	    btnReparar.setForeground(Color.white);
+	    btnReparar.setFont(new Font("Cambria", Font.BOLD, 14));
 
 	    JButton btnEncender = new JButton("Encender Máquina");
 	    btnEncender.setBounds(180, 60, 150, 30);
+	    btnEncender.setPreferredSize(new Dimension(150, 30));
+	    btnEncender.setBackground(new Color(0, 0, 0));
+	    btnEncender.setForeground(Color.white);
+	    btnEncender.setFont(new Font("Cambria", Font.BOLD, 14));
 
 	    JButton btnApagar = new JButton("Apagar Máquina");
 	    btnApagar.setBounds(20, 100, 150, 30);
+	    btnApagar.setPreferredSize(new Dimension(150, 30));
+	    btnApagar.setBackground(new Color(0, 0, 0));
+	    btnApagar.setForeground(Color.white);
+	    btnApagar.setFont(new Font("Cambria", Font.BOLD, 14));
 
 	    Validacion validacion = new Validacion();
 
 	    btnReparar.addActionListener(new ActionListener() {
 	        public void actionPerformed(ActionEvent e) {
-	            int idmaquina = Integer.parseInt(txtIdMaquina.getText());
-	            if (validacion.validarExistenciaMaquina(idmaquina)) {
-	                repararMaquina(idmaquina);
-					mostrarOperacionExitosa("La máquina número " + idmaquina + " ha sido reparada exitosamente");
+	            int idMaquina = Integer.parseInt(txtIdMaquina.getText());
+	            if (validacion.validarExistenciaMaquina(idMaquina)) {
+	                if (repararMaquina(idMaquina)) {
+	                    mostrarOperacionExitosa("La máquina número " + idMaquina + " ha sido reparada exitosamente");
+	                }
 	            }
-				txtIdMaquina.setText("");
+	            txtIdMaquina.setText("");
 	        }
 	    });
 
 	    btnEncender.addActionListener(new ActionListener() {
 	        public void actionPerformed(ActionEvent e) {
+	            System.out.println("Botón Encender Máquina presionado");
 	            int idmaquina = Integer.parseInt(txtIdMaquina.getText());
+	            System.out.println("ID de la máquina ingresado: " + idmaquina);
 	            if (validacion.validarExistenciaMaquina(idmaquina)) {
 	                encenderMaquina(idmaquina);
-					mostrarOperacionExitosa("La máquina número " + idmaquina + " ha sido encendida exitosamente");
+	                mostrarOperacionExitosa("La máquina número " + idmaquina + " ha sido encendida exitosamente");
 	            }
-				txtIdMaquina.setText("");
+	            txtIdMaquina.setText("");
 	        }
 	    });
 
@@ -183,32 +202,33 @@ public class Tecnico extends Empleado implements Menu {
 	            if (validacion.validarExistenciaMaquina(idmaquina)) {
 	                apagarMaquina(idmaquina);
 					mostrarOperacionExitosa("La máquina número " + idmaquina + " ha sido apagada exitosamente");
+					System.out.println("ID de la máquina: " + idmaquina);
 	            }
 				txtIdMaquina.setText("");
 	        }
 	    });
 
 
-	    txtIdMaquina.addActionListener(new ActionListener() {
-	        public void actionPerformed(ActionEvent e) {
-	            String idMaquinaStr = txtIdMaquina.getText();
-	            if (!idMaquinaStr.isEmpty()) {
-	                int idMaquina = Integer.parseInt(idMaquinaStr);
-	                if (validacion.validarExistenciaMaquina(idMaquina)) {
-	                    btnReparar.setEnabled(true);
-	                    btnEncender.setEnabled(true);
-	                    btnApagar.setEnabled(true);
-	                } else {
-	                    btnReparar.setEnabled(false);
-	                    btnEncender.setEnabled(false);
-	                    btnApagar.setEnabled(false);
-	                }
-
-	            }
-
-
-	        }
-	    });
+//	    txtIdMaquina.addActionListener(new ActionListener() {
+//	        public void actionPerformed(ActionEvent e) {
+//	            String idMaquinaStr = txtIdMaquina.getText();
+//	            if (!idMaquinaStr.isEmpty()) {
+//	                int idMaquina = Integer.parseInt(idMaquinaStr);
+//	                if (validacion.validarExistenciaMaquina(idMaquina)) {
+//	                    btnReparar.setEnabled(true);
+//	                    btnEncender.setEnabled(true);
+//	                    btnApagar.setEnabled(true);
+//	                } else {
+//	                    btnReparar.setEnabled(false);
+//	                    btnEncender.setEnabled(false);
+//	                    btnApagar.setEnabled(false);
+//	                }
+//
+//	            }
+//
+//
+//	        }
+//	    });
 
 	    frame.add(btnReparar);
 	    frame.add(btnEncender);

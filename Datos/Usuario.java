@@ -103,26 +103,31 @@ public abstract class Usuario {
     public void mostrarError(String mensaje) {
         JFrame errorFrame = new JFrame("Error");
         errorFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        errorFrame.setSize(300, 100);
+        errorFrame.setSize(600, 100);
         errorFrame.setLayout(new FlowLayout());
-
+        
         JLabel labelError = new JLabel(mensaje);
+        labelError.setForeground(Color.RED);  // Establece el color del texto en rojo
+        labelError.setFont(new Font("Cambria", Font.BOLD, 12));  // Establece la fuente del texto
+        
         errorFrame.add(labelError);
-
         errorFrame.setVisible(true);
+        errorFrame.setLocationRelativeTo(null);
     }
-
-
+  
     public void mostrarOperacionExitosa(String mensaje) {
         JFrame exitoFrame = new JFrame("Operación Exitosa");
         exitoFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        exitoFrame.setSize(300, 150);
+        exitoFrame.setSize(600, 100);
         exitoFrame.setLayout(new FlowLayout());
 
         JLabel labelExito = new JLabel(mensaje);
+        Color darkGreen = new Color(0, 128, 0);  // Color verde oscuro personalizado
+        labelExito.setForeground(darkGreen); 
+        labelExito.setFont(new Font("Cambria", Font.BOLD, 12)); 
 
         exitoFrame.add(labelExito);
-	exitoFrame.setLocationRelativeTo(null);
+        exitoFrame.setLocationRelativeTo(null);
         exitoFrame.setVisible(true);
     }
 

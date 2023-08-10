@@ -124,13 +124,15 @@ public class EmpleadoCaja extends Empleado implements Menu {
         Validacion validacion = new Validacion();
 
         ventana = new JFrame("Empleado Caja");
-        ventana.setSize(500, 300);
+        ventana.setSize(400, 250); // Ajustar el tamaño
         ventana.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        ventana.setLocationRelativeTo(null);
+        ventana.getContentPane().setBackground(new Color(201, 183, 109));
+        ventana.setLayout(new BorderLayout());
 
         panel = new JPanel(new GridBagLayout());
+        panel.setBackground(new Color(201, 183, 109));
         GridBagConstraints gbc = new GridBagConstraints();
-        gbc.insets = new Insets(10, 10, 10, 10); 
+        gbc.insets = new Insets(10, 10, 10, 10);
 
         JLabel labelTitulo = new JLabel("Panel de Empleado Caja");
         labelTitulo.setFont(new Font("Arial", Font.BOLD, 16));
@@ -145,6 +147,9 @@ public class EmpleadoCaja extends Empleado implements Menu {
         labelIdCaja = new JLabel("ID caja a depositar:");
         textFieldIdCaja = new JTextField(10);
         botonAgregarDinero = new JButton("Agregar dinero");
+        botonAgregarDinero.setForeground(Color.white);
+        botonAgregarDinero.setBackground(new Color(0,0, 0));
+        botonAgregarDinero.setFont(new Font("Arial", Font.BOLD, 14));
 
         gbc.gridx = 0;
         gbc.gridy = 1;
@@ -175,18 +180,35 @@ public class EmpleadoCaja extends Empleado implements Menu {
 
         botonAgregarDinero.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                double monto = Double.parseDouble(textFieldMonto.getText());
-                int idCaja = Integer.parseInt(textFieldIdCaja.getText());
-                if (validacion.validarAgregarDinero(monto, idCaja)) {
-                    agregarDinero(monto, id, idCaja);
-                    mostrarOperacionExitosa("Ha depositado $" + monto + " correctamente en la caja número " + idCaja);
+                String montoText = textFieldMonto.getText();
+                String idCajaText = textFieldIdCaja.getText();
+                
+                if (!montoText.isEmpty() && !idCajaText.isEmpty()) {
+                    try {
+                        double monto = Double.parseDouble(montoText);
+                        int idCaja = Integer.parseInt(idCajaText);
+                        
+                        if (validacion.validarAgregarDinero(monto, idCaja)) {
+                            agregarDinero(monto, id, idCaja);
+                            mostrarOperacionExitosa("Ha depositado $" + monto + " correctamente en la caja número " + idCaja);
+                        } else {
+                            mostrarError("Error al agregar dinero.");
+                        }
+                    } catch (NumberFormatException ex) {
+                        mostrarError("Ingrese valores numéricos válidos.");
+                    }
+                } else {
+                    mostrarError("Por favor, complete todos los campos.");
                 }
-                textFieldMonto.setText(""); 
-                textFieldIdCaja.setText(""); 
+                
+                textFieldMonto.setText("");
+                textFieldIdCaja.setText("");
             }
         });
 
-        ventana.add(panel);
+        ventana.add(panel, BorderLayout.CENTER);
+        ventana.setLocationRelativeTo(null);
         ventana.setVisible(true);
     }
+
 }

@@ -133,6 +133,7 @@ public class Administrador extends Usuario implements Menu {
 	            frame.setVisible(true);
 	        } else {
 	            resultado = "No se encontró información de la cuenta del cliente.";
+	            mostrarError("No se encontró información de la cuenta del cliente.");
 	        }
 
 	        rs.close();
@@ -141,6 +142,7 @@ public class Administrador extends Usuario implements Menu {
 	    } catch (Exception e) {
 	        JOptionPane.showMessageDialog(null, "Hubo un error: " + e.getMessage());
 	        resultado = "Hubo un error al consultar la cuenta del cliente.";
+	        mostrarError("Hubo un error al consultar la cuenta del cliente.");
 	    }
 
 	    return resultado;
@@ -199,8 +201,9 @@ public class Administrador extends Usuario implements Menu {
 	        return false;
 	    }
 	}
+	
 	public void verCaja(int idCaja) {
-		Conexion con = new Conexion();
+	    Conexion con = new Conexion();
 	    double sumaMontos = 0.0;
 
 	    try {
@@ -232,15 +235,24 @@ public class Administrador extends Usuario implements Menu {
 	    JFrame infoFrame = new JFrame("Información de la Caja");
 	    infoFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 	    infoFrame.setSize(300, 100);
-	    infoFrame.setLayout(new FlowLayout());
+	    infoFrame.setLayout(new GridBagLayout());
+	    infoFrame.getContentPane().setBackground(new Color(201, 183, 109));
 
 	    JLabel labelInfo = new JLabel("La caja " + idCaja + " tiene un saldo de " + sumaMontos);
+	    labelInfo.setFont(new Font("Cambria", Font.BOLD, 14));
 
-	    infoFrame.add(labelInfo);
+	    GridBagConstraints gbc = new GridBagConstraints();
+	    gbc.insets = new Insets(10, 10, 10, 10);
+	    gbc.anchor = GridBagConstraints.CENTER;
+
+	    gbc.gridx = 0;
+	    gbc.gridy = 0;
+	    gbc.gridwidth = 2;
+	    infoFrame.add(labelInfo, gbc);
+
 	    infoFrame.setLocationRelativeTo(null);
 	    infoFrame.setVisible(true);
 	}
-
 	public boolean login(String nombreUsuario, String contrasena){
 
 		Conexion con = new Conexion();
@@ -284,12 +296,13 @@ public class Administrador extends Usuario implements Menu {
 	    ventana.setSize(400, 300);
 	    ventana.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	    ventana.setLocationRelativeTo(null);
+	    ventana.setBackground(new Color(201, 183, 109));
 
 	    panel = new JPanel(new BorderLayout());
 	    panel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10)); 
 
 	    JLabel labelTitulo = new JLabel("Panel de Administrador");
-	    labelTitulo.setFont(new Font("Arial", Font.BOLD, 16));
+	    labelTitulo.setFont(new Font("Cambria", Font.BOLD, 16));
 	    labelTitulo.setHorizontalAlignment(SwingConstants.CENTER);
 	    panel.add(labelTitulo, BorderLayout.NORTH);
 
@@ -299,11 +312,41 @@ public class Administrador extends Usuario implements Menu {
 	    gbc.insets = new Insets(5, 5, 5, 5); 
 
 	    botonVerCliente = new JButton("Ver cliente");
+	    botonVerCliente.setPreferredSize(new Dimension(200, 40));
+	    botonVerCliente.setBackground(new Color(0, 0, 0));
+	    botonVerCliente.setForeground(Color.white);
+	    botonVerCliente.setFont(new Font("Cambria", Font.BOLD, 14));
+        
 	    botonEliminarCliente = new JButton("Eliminar cliente");
+	    botonEliminarCliente.setPreferredSize(new Dimension(200, 40));
+	    botonEliminarCliente.setBackground(new Color(0, 0, 0));
+	    botonEliminarCliente.setForeground(Color.white);
+	    botonEliminarCliente.setFont(new Font("Cambria", Font.BOLD, 14));
+	    
 	    botonVerCaja = new JButton("Ver caja");
+	    botonVerCaja.setPreferredSize(new Dimension(200, 40));
+	    botonVerCaja.setBackground(new Color(0, 0, 0));
+	    botonVerCaja.setForeground(Color.white);
+	    botonVerCaja.setFont(new Font("Cambria", Font.BOLD, 14));
+	    
 	    botonEliminarJuego = new JButton("Eliminar juego");
+	    botonEliminarJuego.setPreferredSize(new Dimension(200, 40));
+	    botonEliminarJuego.setBackground(new Color(0, 0, 0));
+	    botonEliminarJuego.setForeground(Color.white);
+	    botonEliminarJuego.setFont(new Font("Cambria", Font.BOLD, 14));
+	    
 	    botonEditarJuego = new JButton("Editar juego");
+	    botonEditarJuego.setPreferredSize(new Dimension(200, 40));
+	    botonEditarJuego.setBackground(new Color(0, 0, 0));
+	    botonEditarJuego.setForeground(Color.white);
+	    botonEditarJuego.setFont(new Font("Cambria", Font.BOLD, 14));
+	    
 	    botonEditarDatosCliente = new JButton("Editar datos cliente");
+	    botonEditarDatosCliente.setPreferredSize(new Dimension(200, 40));
+	    botonEditarDatosCliente.setBackground(new Color(0, 0, 0));
+	    botonEditarDatosCliente.setForeground(Color.white);
+	    botonEditarDatosCliente.setFont(new Font("Cambria", Font.BOLD, 14));
+	    
 
 	    gbc.gridx = 0;
 	    gbc.gridy = 0;
@@ -330,25 +373,44 @@ public class Administrador extends Usuario implements Menu {
 	    panelBotones.add(botonEditarDatosCliente, gbc);
 
 	    panel.add(panelBotones, BorderLayout.CENTER);
+	    panelBotones.setBackground(new Color(201, 183, 109));
+	    panel.setBackground(new Color(201, 183, 109));
 
 	    ventana.add(panel);
 	    ventana.setVisible(true);
+	    
         Validacion validacion = new Validacion();
 
         botonVerCliente.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 JFrame inputFrame = new JFrame("Ingreso del ID del Cliente");
                 inputFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-                inputFrame.setSize(300, 150);
-                inputFrame.setLayout(new FlowLayout());
+                inputFrame.setSize(350, 200);
+                inputFrame.setLayout(new GridBagLayout());
+                inputFrame.getContentPane().setBackground(new Color(201, 183, 109));
 
                 JLabel labelIdCliente = new JLabel("ID del Cliente:");
-                JTextField textFieldIdCliente = new JTextField(10);
+                JTextField textFieldIdCliente = new JTextField(15); // Aumentamos el ancho del campo de texto
                 JButton btnAceptar = new JButton("Aceptar");
+                btnAceptar.setPreferredSize(new Dimension(150, 30));
+                btnAceptar.setBackground(new Color(0, 0, 0));
+                btnAceptar.setForeground(Color.white);
+                btnAceptar.setFont(new Font("Cambria", Font.BOLD, 14));
 
-                inputFrame.add(labelIdCliente);
-                inputFrame.add(textFieldIdCliente);
-                inputFrame.add(btnAceptar);
+                GridBagConstraints gbc = new GridBagConstraints();
+                gbc.insets = new Insets(10, 10, 10, 10);
+                gbc.anchor = GridBagConstraints.WEST;
+
+                gbc.gridx = 0;
+                gbc.gridy = 0;
+                inputFrame.add(labelIdCliente, gbc);
+
+                gbc.gridy = 1;
+                inputFrame.add(textFieldIdCliente, gbc);
+
+                gbc.gridy = 2;
+                gbc.gridwidth = 2; // Hacemos que el botón abarque dos columnas
+                inputFrame.add(btnAceptar, gbc);
 
                 btnAceptar.addActionListener(new ActionListener() {
                     public void actionPerformed(ActionEvent e) {
@@ -371,25 +433,45 @@ public class Administrador extends Usuario implements Menu {
                         inputFrame.dispose();
                     }
                 });
+
                 inputFrame.setLocationRelativeTo(null);
                 inputFrame.setVisible(true);
             }
         });
-
+        
         botonEliminarCliente.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                JFrame inputFrame = new JFrame("Ingreso del ID del Cliente");
+                JFrame inputFrame = new JFrame("Eliminar Cliente");
                 inputFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-                inputFrame.setSize(300, 150);
-                inputFrame.setLayout(new FlowLayout());
+                inputFrame.setSize(300, 200);
+                inputFrame.setLayout(new GridBagLayout());
+                inputFrame.getContentPane().setBackground(new Color(201, 183, 109));
 
                 JLabel labelIdCliente = new JLabel("ID del Cliente:");
+                labelIdCliente.setFont(new Font("Cambria", Font.BOLD, 14));
                 JTextField textFieldIdCliente = new JTextField(10);
-                JButton btnAceptar = new JButton("Aceptar");
 
-                inputFrame.add(labelIdCliente);
-                inputFrame.add(textFieldIdCliente);
-                inputFrame.add(btnAceptar);
+                JButton btnAceptar = new JButton("Aceptar");
+                btnAceptar.setPreferredSize(new Dimension(100, 30));
+                btnAceptar.setBackground(new Color(0, 0, 0));
+                btnAceptar.setForeground(Color.white);
+                btnAceptar.setFont(new Font("Cambria", Font.BOLD, 14));
+
+                GridBagConstraints gbc = new GridBagConstraints();
+                gbc.insets = new Insets(10, 10, 10, 10);
+                gbc.anchor = GridBagConstraints.CENTER;
+
+                gbc.gridx = 0;
+                gbc.gridy = 0;
+                inputFrame.add(labelIdCliente, gbc);
+
+                gbc.gridx = 1;
+                inputFrame.add(textFieldIdCliente, gbc);
+
+                gbc.gridx = 0;
+                gbc.gridy = 1;
+                gbc.gridwidth = 2;
+                inputFrame.add(btnAceptar, gbc);
 
                 btnAceptar.addActionListener(new ActionListener() {
                     public void actionPerformed(ActionEvent e) {
@@ -399,15 +481,7 @@ public class Administrador extends Usuario implements Menu {
                                 int idCliente = Integer.parseInt(inputIdCliente);
                                 if (validacion.validarExistenciaCliente(idCliente)) {
                                     eliminarUsuario(idCliente);
-                                    JFrame successFrame = new JFrame("Eliminación exitosa");
-                                    successFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-                                    successFrame.setSize(300, 100);
-                                    successFrame.setLayout(new FlowLayout());
-
-                                    JLabel labelSuccess = new JLabel("Se eliminó con éxito el cliente con ID: " + idCliente);
-
-                                    successFrame.add(labelSuccess);
-                                    successFrame.setVisible(true);
+                                    mostrarOperacionExitosa("Se eliminó con éxito el cliente con ID: " + idCliente);
                                 } else {
                                     mostrarError("No se encontró el cliente con el ID especificado.");
                                 }
@@ -421,25 +495,45 @@ public class Administrador extends Usuario implements Menu {
                         inputFrame.dispose();
                     }
                 });
+
                 inputFrame.setLocationRelativeTo(null);
                 inputFrame.setVisible(true);
             }
         });
 
-       botonVerCaja.addActionListener(new ActionListener() {
+        botonVerCaja.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                JFrame inputFrame = new JFrame("Ingreso del ID de la Caja");
+                JFrame inputFrame = new JFrame("Ver Caja");
                 inputFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-                inputFrame.setSize(300, 150);
-                inputFrame.setLayout(new FlowLayout());
+                inputFrame.setSize(300, 200);
+                inputFrame.setLayout(new GridBagLayout());
+                inputFrame.getContentPane().setBackground(new Color(201, 183, 109));
 
                 JLabel labelIdCaja = new JLabel("ID de la Caja:");
+                labelIdCaja.setFont(new Font("Cambria", Font.BOLD, 14));
                 JTextField textFieldIdCaja = new JTextField(10);
-                JButton btnAceptar = new JButton("Aceptar");
 
-                inputFrame.add(labelIdCaja);
-                inputFrame.add(textFieldIdCaja);
-                inputFrame.add(btnAceptar);
+                JButton btnAceptar = new JButton("Aceptar");
+                btnAceptar.setPreferredSize(new Dimension(100, 30));
+                btnAceptar.setBackground(new Color(0, 0, 0));
+                btnAceptar.setForeground(Color.white);
+                btnAceptar.setFont(new Font("Cambria", Font.BOLD, 14));
+
+                GridBagConstraints gbc = new GridBagConstraints();
+                gbc.insets = new Insets(10, 10, 10, 10);
+                gbc.anchor = GridBagConstraints.CENTER;
+
+                gbc.gridx = 0;
+                gbc.gridy = 0;
+                inputFrame.add(labelIdCaja, gbc);
+
+                gbc.gridx = 1;
+                inputFrame.add(textFieldIdCaja, gbc);
+
+                gbc.gridx = 0;
+                gbc.gridy = 1;
+                gbc.gridwidth = 2;
+                inputFrame.add(btnAceptar, gbc);
 
                 btnAceptar.addActionListener(new ActionListener() {
                     public void actionPerformed(ActionEvent e) {
@@ -462,25 +556,46 @@ public class Administrador extends Usuario implements Menu {
                         inputFrame.dispose();
                     }
                 });
+
                 inputFrame.setLocationRelativeTo(null);
                 inputFrame.setVisible(true);
             }
         });
 
- botonEliminarJuego.addActionListener(new ActionListener() {
+        botonEliminarJuego.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                JFrame inputFrame = new JFrame("Ingreso del ID del Juego");
+                JFrame inputFrame = new JFrame("Eliminar Juego");
                 inputFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
                 inputFrame.setSize(300, 150);
-                inputFrame.setLayout(new FlowLayout());
+                inputFrame.setLayout(new GridBagLayout());
+                inputFrame.getContentPane().setBackground(new Color(201, 183, 109));
 
                 JLabel labelIdJuego = new JLabel("ID del Juego:");
+                labelIdJuego.setFont(new Font("Cambria", Font.BOLD, 14));
                 JTextField textFieldIdJuego = new JTextField(10);
+                textFieldIdJuego.setFont(new Font("Cambria", Font.PLAIN, 14));
                 JButton btnAceptar = new JButton("Aceptar");
+                btnAceptar.setPreferredSize(new Dimension(100, 30));
+                btnAceptar.setBackground(new Color(0, 0, 0));
+                btnAceptar.setForeground(Color.white);
+                btnAceptar.setFont(new Font("Cambria", Font.BOLD, 14));
 
-                inputFrame.add(labelIdJuego);
-                inputFrame.add(textFieldIdJuego);
-                inputFrame.add(btnAceptar);
+                GridBagConstraints gbc = new GridBagConstraints();
+                gbc.insets = new Insets(10, 10, 10, 10);
+                gbc.anchor = GridBagConstraints.WEST;
+
+                gbc.gridx = 0;
+                gbc.gridy = 0;
+                inputFrame.add(labelIdJuego, gbc);
+
+                gbc.gridx = 1;
+                gbc.gridy = 0;
+                inputFrame.add(textFieldIdJuego, gbc);
+
+                gbc.gridx = 0;
+                gbc.gridy = 1;
+                gbc.gridwidth = 2;
+                inputFrame.add(btnAceptar, gbc);
 
                 btnAceptar.addActionListener(new ActionListener() {
                     public void actionPerformed(ActionEvent e) {
@@ -490,48 +605,63 @@ public class Administrador extends Usuario implements Menu {
                                 int idJuego = Integer.parseInt(inputIdJuego);
                                 if (validacion.validarEliminarJuego(idJuego)) {
                                     eliminarJuego(idJuego);
-
+                                    mostrarOperacionExitosa("Se eliminó con éxito el juego con ID: " + idJuego);
                                 } else {
                                     mostrarError("No se encontró el juego con el ID especificado.");
                                 }
                             } catch (NumberFormatException ex) {
                                 mostrarError("Ingrese un valor numérico válido para el ID del juego.");
-                            }
-                        } 
+                            } 
+                        } else {
+                        	mostrarError("Por favor, ingrese el ID del juego.");
+                        }                        
                         inputFrame.dispose();
                     }
                 });
+
                 inputFrame.setLocationRelativeTo(null);
                 inputFrame.setVisible(true);
             }
         });
-
- botonEditarJuego.addActionListener(new ActionListener() {
+        
+        botonEditarJuego.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 JFrame inputFrame = new JFrame("Edición de juego");
                 inputFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-                inputFrame.setSize(300, 250);
-                inputFrame.setLayout(new GridLayout(5, 2));
+                inputFrame.setSize(400, 300);
+                inputFrame.getContentPane().setBackground(new Color(201, 183, 109));
+
+                JPanel panelEditarJuego = new JPanel();
+                panelEditarJuego.setLayout(new GridLayout(5, 2, 10, 10));
+                panelEditarJuego.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
+                panelEditarJuego.setBackground(new Color(201, 183, 109));
 
                 JLabel labelIdJuego = new JLabel("ID del Juego:");
                 JTextField textFieldIdJuego = new JTextField(10);
+
                 JLabel labelDescripcion = new JLabel("Descripción:");
                 JTextField textFieldDescripcion = new JTextField(20);
+
                 JLabel labelJugadoresMinimos = new JLabel("Jugadores mínimos:");
                 JTextField textFieldJugadoresMinimos = new JTextField(10);
+
                 JLabel labelJugadoresMaximos = new JLabel("Jugadores máximos:");
                 JTextField textFieldJugadoresMaximos = new JTextField(10);
-                JButton btnAceptar = new JButton("Aceptar");
 
-                inputFrame.add(labelIdJuego);
-                inputFrame.add(textFieldIdJuego);
-                inputFrame.add(labelDescripcion);
-                inputFrame.add(textFieldDescripcion);
-                inputFrame.add(labelJugadoresMinimos);
-                inputFrame.add(textFieldJugadoresMinimos);
-                inputFrame.add(labelJugadoresMaximos);
-                inputFrame.add(textFieldJugadoresMaximos);
-                inputFrame.add(btnAceptar);
+                JButton btnAceptar = new JButton("Aceptar");
+                btnAceptar.setForeground(Color.white);
+                btnAceptar.setBackground(new Color(0, 0, 0));
+                btnAceptar.setFont(new Font("Cambria", Font.BOLD, 14));
+
+                panelEditarJuego.add(labelIdJuego);
+                panelEditarJuego.add(textFieldIdJuego);
+                panelEditarJuego.add(labelDescripcion);
+                panelEditarJuego.add(textFieldDescripcion);
+                panelEditarJuego.add(labelJugadoresMinimos);
+                panelEditarJuego.add(textFieldJugadoresMinimos);
+                panelEditarJuego.add(labelJugadoresMaximos);
+                panelEditarJuego.add(textFieldJugadoresMaximos);
+                panelEditarJuego.add(btnAceptar);
 
                 btnAceptar.addActionListener(new ActionListener() {
                     public void actionPerformed(ActionEvent e) {
@@ -548,18 +678,20 @@ public class Administrador extends Usuario implements Menu {
 
                                 if (validacion.validarEditarJuego(descripcion, jugadoresMinimos, jugadoresMaximos)) {
                                     editarJuego(descripcion, jugadoresMaximos, idJuego);
+                                    mostrarOperacionExitosa("Se editó con éxito el juego con ID: " + idJuego);
                                     inputFrame.dispose();
                                 } else {
-                                	mostrarError("Ingrese valores válidos");
+                                    mostrarError("Ingrese valores válidos");
                                 }
                             } catch (NumberFormatException ex) {
-                            	 mostrarError("Ingrese valores válidos");
+                                mostrarError("Ingrese valores válidos");
                             }
                         } else {
-                        	mostrarError("Ingrese valores válidos");
+                            mostrarError("Ingrese valores válidos");
                         }
                     }
                 });
+                inputFrame.add(panelEditarJuego);
                 inputFrame.setLocationRelativeTo(null);
                 inputFrame.setVisible(true);
             }
@@ -570,25 +702,48 @@ public class Administrador extends Usuario implements Menu {
             public void actionPerformed(ActionEvent e) {
                 JFrame inputFrame = new JFrame("Actualización de cliente");
                 inputFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-                inputFrame.setSize(300, 200);
-                inputFrame.setLayout(new GridLayout(4, 2)); 
+                inputFrame.setSize(400, 250);
+                inputFrame.setLayout(new GridBagLayout());
+                inputFrame.getContentPane().setBackground(new Color(201, 183, 109));
+
+                GridBagConstraints gbc = new GridBagConstraints();
+                gbc.gridx = 0;
+                gbc.gridy = 0;
+                gbc.anchor = GridBagConstraints.WEST;
+                gbc.insets = new Insets(5, 10, 5, 10);
 
                 JLabel labelId = new JLabel("ID del cliente:");
-                JTextField textFieldId = new JTextField(10);
-                JLabel labelEmail = new JLabel("Nuevo email:");
-                JTextField textFieldEmail = new JTextField(10);
-                JLabel labelDireccion = new JLabel("Nueva dirección:");
-                JTextField textFieldDireccion = new JTextField(10);
-                JButton btnAceptar = new JButton("Aceptar");
-          
-                inputFrame.add(labelId);
-                inputFrame.add(textFieldId);
-                inputFrame.add(labelEmail);
-                inputFrame.add(textFieldEmail);
-                inputFrame.add(labelDireccion);
-                inputFrame.add(textFieldDireccion);
-                inputFrame.add(btnAceptar);
+                JTextField textFieldId = new JTextField(20); // Ajusta el ancho del campo
 
+                JLabel labelEmail = new JLabel("Nuevo email:");
+                JTextField textFieldEmail = new JTextField(20); // Ajusta el ancho del campo
+
+                JLabel labelDireccion = new JLabel("Nueva dirección:");
+                JTextField textFieldDireccion = new JTextField(20); // Ajusta el ancho del campo
+
+                JButton btnAceptar = new JButton("Aceptar");
+                btnAceptar.setForeground(Color.white);
+                btnAceptar.setBackground(new Color(0, 0, 0));
+                btnAceptar.setFont(new Font("Cambria", Font.BOLD, 14));
+
+                inputFrame.add(labelId, gbc);
+                gbc.gridx++;
+                inputFrame.add(textFieldId, gbc);
+                gbc.gridx = 0;
+                gbc.gridy++;
+                inputFrame.add(labelEmail, gbc);
+                gbc.gridx++;
+                inputFrame.add(textFieldEmail, gbc);
+                gbc.gridx = 0;
+                gbc.gridy++;
+                inputFrame.add(labelDireccion, gbc);
+                gbc.gridx++;
+                inputFrame.add(textFieldDireccion, gbc);
+                gbc.gridx = 0;
+                gbc.gridy++;
+                gbc.gridwidth = 2; // Para que el botón abarque dos columnas
+                inputFrame.add(btnAceptar, gbc);
+                
                 btnAceptar.addActionListener(new ActionListener() {
                     public void actionPerformed(ActionEvent e) {
                     	String inputId = textFieldId.getText();
@@ -599,6 +754,7 @@ public class Administrador extends Usuario implements Menu {
                             try {
                                 int idCliente = Integer.parseInt(inputId);
                                 if (validacion.validarActualizarCliente(nuevoEmail, nuevaDireccion, idCliente)) {
+                                	mostrarOperacionExitosa("Se editó con éxito el cliente con ID: " + idCliente);
                                     actualizarCliente(nuevoEmail, nuevaDireccion, idCliente);
                                 } else {
                                     mostrarError("No se pudo actualizar el cliente.");

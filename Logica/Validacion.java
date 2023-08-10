@@ -8,17 +8,20 @@ import java.awt.*;
 
 public class Validacion {
 
-	private void mostrarError(String mensaje) {
-		JFrame errorFrame = new JFrame("Error");
-		errorFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		errorFrame.setSize(300, 100);
-		errorFrame.setLayout(new FlowLayout());
-
-		JLabel labelError = new JLabel(mensaje);
-		errorFrame.add(labelError);
-		errorFrame.setLocationRelativeTo(null);
-		errorFrame.setVisible(true);
-	}
+    public void mostrarError(String mensaje) {
+        JFrame errorFrame = new JFrame("Error");
+        errorFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        errorFrame.setSize(600, 100);
+        errorFrame.setLayout(new FlowLayout());
+        
+        JLabel labelError = new JLabel(mensaje);
+        labelError.setForeground(Color.RED);  // Establece el color del texto en rojo
+        labelError.setFont(new Font("Cambria", Font.BOLD, 12));  // Establece la fuente del texto
+        
+        errorFrame.add(labelError);
+        errorFrame.setVisible(true);
+        errorFrame.setLocationRelativeTo(null);
+    }
     
 //VALIDACIONES LOGIN
 
@@ -55,6 +58,7 @@ public class Validacion {
 				return true;
 			}
 			else{
+				mostrarError("No se ha completado la operación");
 				return false;
 			}
 
@@ -64,6 +68,7 @@ public class Validacion {
 
 
 		if (monto <0 || monto == 0) {
+			mostrarError("No se ha completado la operación");
 			return false;
 		}
 
@@ -71,8 +76,6 @@ public class Validacion {
 	}
 
 	public boolean validarJugar(double monto){
-
-
 			if(monto<=0){
 				return false;}
 			else{
@@ -86,7 +89,7 @@ public class Validacion {
 
 	public boolean validarVerCaja(int idCaja){
 
-			if(idCaja<=0 || idCaja>4){
+			if(idCaja<1 || idCaja>3){
 				mostrarError("La caja " + idCaja + " no existe o no tiene transacciones.");
 				return false;
 			}
@@ -99,8 +102,8 @@ public class Validacion {
 	public boolean validarEditarJuego (String descripcion, int jugadoresMinimos, int jugadoresMaximos) {
 
 
-		if(jugadoresMinimos < 1 || jugadoresMaximos > 6) {
-			mostrarError("La cantidad de jugadores mínimos debe ser mayor o igual a 1 y menor o igual a 6");
+		if(jugadoresMinimos < 1 || jugadoresMaximos > 11) {
+			mostrarError("La cantidad de jugadores mínimos debe ser mayor o igual a 1 y menor o igual a 10");
             return false;
 		}else if (descripcion.length() < 10 || descripcion.length() > 100){
 			mostrarError("La descripcion debe tener entre 10 y 100 caracteres");
@@ -115,7 +118,7 @@ public class Validacion {
 
 	public boolean validarEliminarJuego(int idJuego){
 
-			if(idJuego<0 || idJuego>50){
+			if(idJuego<0 || idJuego>4){
 				return false;
 			}
 			else {
@@ -141,7 +144,7 @@ public class Validacion {
 
 	public boolean validarExistenciaCliente(int idUsuario) {
 
-		if(idUsuario <= 0 || idUsuario >99 ){
+		if(idUsuario < 11 || idUsuario >16 ){
 
 			mostrarError("El ID del Usuario debe ser un numero entre 1 y 99");
 			return false;
@@ -159,7 +162,7 @@ public class Validacion {
 
 	public boolean validarAgregarDinero (double montoAAgregar, int idCaja) {
 
-		if(montoAAgregar > 0 && idCaja >0 && idCaja<4) {
+		if(montoAAgregar > 0 && (idCaja >0 && idCaja<4)) {
             return true;
 		}else {
 			mostrarError("El monto debe ser un valor mayor a 0 y el numero de la caja debe ser un numero entero entre 1 y 4");
@@ -175,15 +178,13 @@ public class Validacion {
 // Validaciones Empleado Maquina
 
 
-	public boolean validarExistenciaMaquina(int idMaquina){
-
-		if(idMaquina<1 || idMaquina>3) {
-
-			mostrarError("La máquina número " + idMaquina + " no existe");
-			return false;}
-		else{
-			return  true;
-		}
+	public boolean validarExistenciaMaquina(int idMaquina) {
+	    if (idMaquina < 1 || idMaquina > 3) {
+	        mostrarError("La máquina número " + idMaquina + " no existe");
+	        return false;
+	    } else {
+	        return true;
+	    }
 	}
     
 }

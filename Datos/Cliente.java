@@ -390,7 +390,8 @@ public class Cliente extends Usuario implements Menu {
             mostrarError("Lo sentimos, la maquina esta dañada");
             return false;
         }
-        else if(juego.getMaquina().getHabilitada(idJuego)){
+
+        else if(!juego.getMaquina().getHabilitada(idJuego)){
             mostrarError("Lo sentimos, la maquina no esta habilitada");
             return false;
         }
@@ -476,54 +477,79 @@ public class Cliente extends Usuario implements Menu {
 
 
 
-
     public void mostrarMenu(String id) {
         int idCliente = getIdCliente(id);
 
-        Font fontBtn = new Font("Arial", Font.BOLD, 12);
+        Font fontBtn = new Font("Cambria", Font.BOLD, 12);
 
-        ventana = new JFrame("Mi Aplicación");
+        ventana = new JFrame("Cliente");
         ventana.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         ventana.setSize(400, 300);
         ventana.setLocationRelativeTo(null);
 
-        // Para metodo verCuenta
+        // Para método verCuenta
         perfil = new JFrame("Detalles de cuenta");
-        perfil.setSize(500,300);
+        perfil.setSize(500, 300);
 
+        // Crear botones con dimensiones personalizadas
         botonVerPerfil = new JButton("Ver perfil");
+        botonVerPerfil.setPreferredSize(new Dimension(200, 40));
+        botonVerPerfil.setBackground(new Color(0, 0, 0));
+        botonVerPerfil.setForeground(Color.white);
+        botonVerPerfil.setFont(new Font("Cambria", Font.BOLD, 14));
+
         botonJugar = new JButton("Jugar");
-        botonVerHistorial = new JButton("Ver historial partidas");
+        botonJugar.setPreferredSize(new Dimension(200, 40));
+        botonJugar.setBackground(new Color(0, 0, 0));
+        botonJugar.setForeground(Color.white);
+        botonJugar.setFont(new Font("Cambria", Font.BOLD, 14));
+
+        botonVerHistorial = new JButton("Ver historial de partidas");
+        botonVerHistorial.setPreferredSize(new Dimension(200, 40));
+        botonVerHistorial.setBackground(new Color(0, 0, 0));
+        botonVerHistorial.setForeground(Color.white);
+        botonVerHistorial.setFont(new Font("Cambria", Font.BOLD, 14));
+
         botonAgregarDinero = new JButton("Agregar dinero");
+        botonAgregarDinero.setPreferredSize(new Dimension(200, 40));
+        botonAgregarDinero.setBackground(new Color(0, 0, 0));
+        botonAgregarDinero.setForeground(Color.white);
+        botonAgregarDinero.setFont(new Font("Cambria", Font.BOLD, 14));
+
         botonRetirarDinero = new JButton("Retirar dinero");
+        botonRetirarDinero.setPreferredSize(new Dimension(200, 40));
+        botonRetirarDinero.setBackground(new Color(0, 0, 0));
+        botonRetirarDinero.setForeground(Color.white);
+        botonRetirarDinero.setFont(new Font("Cambria", Font.BOLD, 14));
 
         botonVolver = new JButton("Volver");
         botonVolver.setPreferredSize(new Dimension(150, 30));
         botonVolver.setFont(fontBtn);
 
-
         textAreaVerPerfil = new JTextArea();
         textAreaVerPerfil.setEditable(false);
 
-        panel = new JPanel(new BorderLayout());
-        
-        // Crear el título del cliente
-        JLabel labelCliente = new JLabel("Cliente");
-        labelCliente.setFont(new Font("Arial", Font.BOLD, 18));
-        labelCliente.setHorizontalAlignment(JLabel.CENTER);
-        panel.add(labelCliente, BorderLayout.NORTH);
+        panel = new JPanel(new GridBagLayout());
+        panel.setBackground(new Color(201, 183, 109));
 
-        // Crear el panel para los botones en el centro
-        JPanel panelBotones = new JPanel(new GridLayout(5, 1, 10, 10)); // GridLayout con 5 filas, 1 columna
-        panelBotones.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10)); // Agregar un margen al panel de botones
-        
-        panelBotones.add(botonVerPerfil);
-        panelBotones.add(botonJugar);
-        panelBotones.add(botonVerHistorial);
-        panelBotones.add(botonAgregarDinero);
-        panelBotones.add(botonRetirarDinero);
-        
-        panel.add(panelBotones, BorderLayout.CENTER);
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.insets = new Insets(5, 5, 5, 5);
+        gbc.anchor = GridBagConstraints.CENTER;
+
+        gbc.gridy = 0;
+        panel.add(botonVerPerfil, gbc);
+
+        gbc.gridy = 1;
+        panel.add(botonJugar, gbc);
+
+        gbc.gridy = 2;
+        panel.add(botonVerHistorial, gbc);
+
+        gbc.gridy = 3;
+        panel.add(botonAgregarDinero, gbc);
+
+        gbc.gridy = 4;
+        panel.add(botonRetirarDinero, gbc);
 
         ventana.add(panel);
         ventana.setVisible(true);
@@ -532,15 +558,26 @@ public class Cliente extends Usuario implements Menu {
 
         botonVerPerfil.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-
                 ventana.dispose();
 
                 String informacionCuenta = verCuenta(idCliente);
-
+                textAreaVerPerfil.setBackground(new Color(201, 183, 109));
                 textAreaVerPerfil.setText(informacionCuenta);
+                textAreaVerPerfil.setFont(new Font("Cambria", Font.PLAIN, 14));
 
-                perfil.add(textAreaVerPerfil);
-               // perfil.add(botonVolver);
+                // Crear un JPanel para contener el JTextArea y centrar el contenido
+                JPanel panelCentrado = new JPanel(new GridBagLayout());
+                panelCentrado.setBackground(new Color(201, 183, 109));
+                panelCentrado.add(textAreaVerPerfil);
+
+                JScrollPane scrollPane = new JScrollPane(panelCentrado);
+
+                // Ajustar el tamaño de la ventana en función del contenido
+                perfil.getContentPane().removeAll();
+                perfil.getContentPane().setLayout(new BorderLayout());
+                perfil.getContentPane().add(scrollPane, BorderLayout.CENTER);
+                perfil.pack();  // Ajusta el tamaño de la ventana al contenido
+
                 perfil.setLocationRelativeTo(null);
                 perfil.setVisible(true);
             }
@@ -568,16 +605,32 @@ public class Cliente extends Usuario implements Menu {
                     JLabel labelApuesta = new JLabel("Monto de apuesta:");
                     JTextField textApuesta = new JTextField(10);
                     JButton btnJugar = new JButton("Jugar");
+                    btnJugar.setPreferredSize(new Dimension(150, 30));
+                    btnJugar.setBackground(new Color(0, 0, 0));
+                    btnJugar.setForeground(Color.white);
+                    btnJugar.setFont(new Font("Cambria", Font.BOLD, 14));
 
                     JFrame frame = new JFrame("Seleccione juego y monto de apuesta");
                     frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
                     frame.setSize(300, 200);
-                    frame.setLayout(new FlowLayout());
+                    frame.setLayout(new GridBagLayout());
+                    frame.getContentPane().setBackground(new Color(201, 183, 109));
 
-                    frame.add(comboBoxJuegos);
-                    frame.add(labelApuesta);
-                    frame.add(textApuesta);
-                    frame.add(btnJugar);
+                    GridBagConstraints gbc = new GridBagConstraints();
+                    gbc.insets = new Insets(5, 5, 5, 5);
+                    gbc.anchor = GridBagConstraints.CENTER;
+
+                    gbc.gridy = 0;
+                    frame.add(comboBoxJuegos, gbc);
+
+                    gbc.gridy = 1;
+                    frame.add(labelApuesta, gbc);
+
+                    gbc.gridy = 2;
+                    frame.add(textApuesta, gbc);
+
+                    gbc.gridy = 3;
+                    frame.add(btnJugar, gbc);
 
                     btnJugar.addActionListener(new ActionListener() {
                         public void actionPerformed(ActionEvent e) {
@@ -593,7 +646,6 @@ public class Cliente extends Usuario implements Menu {
                                         }
                                     } catch (NumberFormatException ex) {
                                         mostrarError("Ingrese un valor numérico válido para la apuesta.");
-
                                     }
                                 }
                             }
@@ -617,24 +669,33 @@ public class Cliente extends Usuario implements Menu {
         botonVerHistorial.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 String historialPartidas = getHistorialPartidas(id);
+                
                 JFrame historialFrame = new JFrame("Historial de partidas");
                 historialFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-                historialFrame.setSize(500, 300);
-                historialFrame.setLayout(new BorderLayout());
+                historialFrame.setSize(500, 400);
+                historialFrame.setLayout(new GridBagLayout());
+                historialFrame.getContentPane().setBackground(new Color(201, 183, 109));
 
-                JTextArea textAreaHistorial = new JTextArea();
+                JTextArea textAreaHistorial = new JTextArea(historialPartidas);
                 textAreaHistorial.setEditable(false);
-                textAreaHistorial.setText(historialPartidas);
+                textAreaHistorial.setFont(new Font("Cambria", Font.PLAIN, 14));
+                
 
                 JScrollPane scrollPane = new JScrollPane(textAreaHistorial);
-                historialFrame.add(scrollPane, BorderLayout.CENTER);
+                scrollPane.setPreferredSize(new Dimension(300, 150));             
+
+                GridBagConstraints gbc = new GridBagConstraints();
+                gbc.insets = new Insets(10, 10, 10, 10);
+                gbc.anchor = GridBagConstraints.CENTER;
+                gbc.fill = GridBagConstraints.BOTH;
+                gbc.gridx = 0;
+                gbc.gridy = 0;
+                gbc.weightx = 1.0;
+                gbc.weighty = 1.0;
+                historialFrame.add(scrollPane, gbc);
 
                 historialFrame.setLocationRelativeTo(null);
                 historialFrame.setVisible(true);
-
-              /*  JOptionPane.showMessageDialog(null, getHistorialPartidas(id),
-                        "Historial de partidas",
-                        JOptionPane.INFORMATION_MESSAGE);*/
             }
         });
 
@@ -644,10 +705,17 @@ public class Cliente extends Usuario implements Menu {
                 inputFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
                 inputFrame.setSize(300, 150);
                 inputFrame.setLayout(new FlowLayout());
+                inputFrame.getContentPane().setBackground(new Color(201, 183, 109));
+                inputFrame.setFont(new Font("Cambria", Font.BOLD, 14));
 
                 JLabel labelMonto = new JLabel("Cuánto dinero desea cargar?");
+                labelMonto.setFont(new Font("Cambria", Font.BOLD, 14));
                 JTextField textFieldMonto = new JTextField(10);
                 JButton btnAceptar = new JButton("Aceptar");
+                btnAceptar.setPreferredSize(new Dimension(150, 30));
+                btnAceptar.setBackground(new Color(0, 0, 0));
+                btnAceptar.setForeground(Color.white);
+                btnAceptar.setFont(new Font("Cambria", Font.BOLD, 14));
 
                 inputFrame.add(labelMonto);
                 inputFrame.add(textFieldMonto);
@@ -661,10 +729,13 @@ public class Cliente extends Usuario implements Menu {
                                 double monto = Double.parseDouble(inputMonto);
                                 if (validar.validarCargaDinero(idCliente, monto)) {
                                     cargarSaldoOnline(monto, id);
+                                    mostrarOperacionExitosa("Se ha cargado exitosamente");
                                 }
                             } catch (NumberFormatException ex) {
                                 mostrarError("Ingrese un valor numérico válido para el monto.");
                             }
+                        } else{mostrarError("Ingrese un valor numérico válido para el monto.");
+                        
                         }
                         inputFrame.dispose();
                     }
@@ -680,10 +751,17 @@ public class Cliente extends Usuario implements Menu {
                 inputFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
                 inputFrame.setSize(300, 150);
                 inputFrame.setLayout(new FlowLayout());
+                inputFrame.getContentPane().setBackground(new Color(201, 183, 109));
+                inputFrame.setFont(new Font("Cambria", Font.BOLD, 14));
 
                 JLabel labelMonto = new JLabel("Cuánto dinero desea retirar?");
+                labelMonto.setFont(new Font("Cambria", Font.BOLD, 14));
                 JTextField textFieldMonto = new JTextField(10);
                 JButton btnAceptar = new JButton("Aceptar");
+                btnAceptar.setPreferredSize(new Dimension(150, 30));
+                btnAceptar.setBackground(new Color(0, 0, 0));
+                btnAceptar.setForeground(Color.white);
+                btnAceptar.setFont(new Font("Cambria", Font.BOLD, 14));
 
                 inputFrame.add(labelMonto);
                 inputFrame.add(textFieldMonto);
@@ -701,6 +779,7 @@ public class Cliente extends Usuario implements Menu {
                             } catch (NumberFormatException ex) {
                                 mostrarError("Ingrese un valor numérico válido para el monto.");
                             }
+                        } else{mostrarError("Ingrese un valor numérico válido para el monto.");
                         }
                         inputFrame.dispose();
                     }
